@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Myheader from '../components/Myheader'
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -12,12 +12,15 @@ const Home = (props) => {
     const [visible, setVisible] = useState(false);
     const [AddC, setAddC] = useState('');
     const [client, setClient] = useState([])
-    console.log(cred.User);
+    // console.log(cred.User);
     const usersCollectionRef = collection(db, cred.User.username);
 
     const toggleOverlay = () => {
         setVisible(!visible);
     };
+     useEffect(() => {
+         Find()
+     })
     const Find = async () => {
         const docRef = doc(db, cred.User.username, 'mohit');
         const docSnap = await getDocs(usersCollectionRef);
@@ -93,10 +96,15 @@ const Home = (props) => {
                 onPress={Find}
             />
             {
-                setTimeout(() => {
-                    console.log(client)
-                }, 4000)
+                client.map((l) => (
+                    <ListItem bottomDivider>
+                        <ListItem.Content>
+                            <ListItem.Title>{l}</ListItem.Title>
+                        </ListItem.Content>
+                    </ListItem>
+                ))
             }
+
         </View>
     )
 }
