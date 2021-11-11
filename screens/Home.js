@@ -96,12 +96,13 @@ const Home = (props) => {
                 onPress={Find}
             />
             {
+                 client ?  
                 client.map((l) => (
                     <ListItem bottomDivider>
                         <ListItem.Content>
                             <ListItem.Title>{l}</ListItem.Title>
                         </ListItem.Content>
-                    </ListItem>
+                    </ListItem> : <Text>No client</Text>
                 ))
             }
 
