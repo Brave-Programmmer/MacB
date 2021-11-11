@@ -4,24 +4,27 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Home from './screens/Home';
 import { NavigationContainer } from '@react-navigation/native';
 import Login from './screens/Login';
+import UserState from './context/user/UserState';
 
 const Stack = createStackNavigator();
 export default function App() {
   return (
-    <NavigationContainer>
-      <StatusBar
-        barStyle='light-content'
-      />
-      <Stack.Navigator
-        initialRouteName="Login"
-        screenOptions={{
-          headerShown: false
-        }}
-      >
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Home" component={Home} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <UserState>
+      <NavigationContainer>
+        <StatusBar
+          barStyle='light-content'
+        />
+        <Stack.Navigator
+          initialRouteName="Login"
+          screenOptions={{
+            headerShown: false
+          }}
+        >
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Home" component={Home} />
+        </Stack.Navigator>
+      </NavigationContainer></UserState>
+
   );
 }
 

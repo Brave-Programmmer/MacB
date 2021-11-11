@@ -2,12 +2,13 @@ import React, { useState } from 'react'
 import UserContext from './UserContext'
 
 const UserState = (props) => {
-    const [User, setUser] = useState(myvar)
     const myvar = {
         username: '',
         uid: '',
         password: ''
     }
+    const [User, setUser] = useState(myvar)
+
     const UpdateUsercred = (name, uid, pass) => {
         setUser({
             username: name,
