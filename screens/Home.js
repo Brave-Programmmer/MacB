@@ -2,19 +2,33 @@ import React, { useContext, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import Myheader from '../components/Myheader'
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Button, Input, Overlay } from 'react-native-elements';
+import { Button, Input, Overlay, ListItem } from 'react-native-elements';
 import { db } from '../firebase';
-import { collection } from "firebase/firestore";
+import { collection, doc, setDoc, onSnapshot, getDocs } from "firebase/firestore";
 import UserContext from '../context/user/UserContext';
 const Home = (props) => {
+
     const cred = useContext(UserContext);
     const [visible, setVisible] = useState(false);
     const [AddC, setAddC] = useState('');
+    const [client, setClient] = useState([])
     console.log(cred.User);
     const usersCollectionRef = collection(db, cred.User.username);
+
     const toggleOverlay = () => {
         setVisible(!visible);
     };
+    const Find = async () => {
+        const docRef = doc(db, cred.User.username, 'mohit');
+        const docSnap = await getDocs(usersCollectionRef);
+        docSnap.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id);
+            setClient(client.push(doc.id))
+        });
+        // console.log(client);
+    }
+
     return (
         <View>
             <Myheader title="Home" right={<TouchableOpacity
@@ -37,7 +51,7 @@ const Home = (props) => {
                 <Overlay isVisible={visible} onBackdropPress={toggleOverlay} overlayStyle={{
                     width: '80%',
                     alignItems: 'center',
-                    height: '60%'
+                    height: '70%'
                 }}>
                     <TouchableOpacity
                         onPress={toggleOverlay}
@@ -63,14 +77,26 @@ const Home = (props) => {
                     />
                     <Button
                         type='solid'
-                        onPress={()=>{
-                            Collection()
+                        onPress={async () => {
+                            await setDoc(doc(db, cred.User.username, AddC), {
+                                payment: [],
+                                remain: []
+                            });
                         }}
                         title='Add'
                     />
                 </Overlay>
-            </View>
 
+            </View>
+            <Button
+                title="a"
+                onPress={Find}
+            />
+            {
+                setTimeout(() => {
+                    console.log(client)
+                }, 4000)
+            }
         </View>
     )
 }
