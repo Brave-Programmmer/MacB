@@ -24,7 +24,8 @@ const Home = (props) => {
     const Find = async () => {
         const docRef = doc(db, cred.User.username, 'mohit');
         const docSnap = await getDocs(usersCollectionRef);
-        docSnap.forEach((doc) => {
+   setclient(docSnap.docs.map((doc) => ({ ...doc.data(), id: doc.id })));     
+docSnap.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
             console.log(doc.id);
             setClient(client.push(doc.id))
