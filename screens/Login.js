@@ -15,14 +15,11 @@ const Login = (props) => {
         // console.log(Username);
         if (Username) {
             try {
-                console.log('a');
                 const log = await signInWithEmailAndPassword(auth, Username, Password);
                 // console.log(log.user);
                 cred.UpdateUsercred(log.user.email, log.user.uid, Password)
-                console.log(cred.User);
-                onAuthStateChanged(auth,(user)=>{
-                    props.navigation.navigate('Home');
-                })
+                // console.log(cred.User.username);
+                props.navigation.navigate('Home',);
             } catch (error) {
                 Alert.alert('Error!!', "Invaild Credentials", error)
             }
@@ -30,48 +27,48 @@ const Login = (props) => {
             Alert.alert('Error!!', 'Please Enter Username and Password');
         }
     }
-    const onSignup = () => {
 
-    }
     return (
         // <UserState>
         //     <UserContext>
-                <View>
-                    <Myheader title="Login" right={<Text></Text>} />
-                    <View style={styles.container}>
-                        <KeyboardAvoidingView
-                            style={{
-                                marginTop: 20,
-                                width: "80%"
-                            }}
-                        >
-                            <Input
-                                value={Username}
-                                onChangeText={setUsername}
-                                style={styles.input}
-                                placeholder="Enter your Username"
-                            />
-                            <Input
-                                value={Password}
-                                onChangeText={setPassword}
-                                style={styles.input}
-                                placeholder="Enter your password"
-                            />
-                            <Button
-                                onPress={onLogin}
-                                containerStyle={{
-                                    marginBottom: 20
-                                }}
-                                title="Login"
-                            />
-                            <Button
-                                onPress={onSignup}
-                                type="outline"
-                                title="Sign Up"
-                            />
-                        </KeyboardAvoidingView>
-                    </View>
-                </View>
+        <View>
+            <Myheader title="Login" right={<Text></Text>} />
+            <View style={styles.container}>
+                <KeyboardAvoidingView
+                    style={{
+                        marginTop: 20,
+                        width: "80%"
+                    }}
+                >
+                    <Input
+                        value={Username}
+                        onChangeText={setUsername}
+                        style={styles.input}
+                        placeholder="Enter your Username"
+                    />
+                    <Input
+                        value={Password}
+                        onChangeText={setPassword}
+                        style={styles.input}
+                        placeholder="Enter your password"
+                    />
+                    <Button
+                        onPress={onLogin}
+                        containerStyle={{
+                            marginBottom: 20
+                        }}
+                        title="Login"
+                    />
+                    <Button
+                        onPress={() => {
+                            props.navigation.navigate('Signup');
+                        }}
+                        type="outline"
+                        title="Sign Up"
+                    />
+                </KeyboardAvoidingView>
+            </View>
+        </View>
         //     </UserContext>
 
         // </UserState>
