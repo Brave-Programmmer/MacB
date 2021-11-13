@@ -141,10 +141,7 @@ const Home = (props) => {
                                             fontSize: 20
                                         }}>{doc.id}</Text>
                                         <View>
-                                            <TouchableOpacity
-                                            onPress={
-                                                Alert.alert("sa")
-                                            }>
+                                            <TouchableOpacity onPress={toggleOverlay}>
                                                 <View style={{
                                                     flexDirection: 'row'
                                                 }}>
