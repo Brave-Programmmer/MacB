@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native'
 import Myheader from '../components/Myheader'
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Button, Input, Overlay, ListItem } from 'react-native-elements';
+import { Button, Input, Overlay, ListItem, ButtonGroup } from 'react-native-elements';
 import { db } from '../firebase';
 import { collection, doc, setDoc, onSnapshot, getDocs } from "firebase/firestore";
 import UserContext from '../context/user/UserContext';
@@ -11,25 +11,51 @@ const Home = (props) => {
     const cred = useContext(UserContext);
     const [visible, setVisible] = useState(false);
     const [AddC, setAddC] = useState('');
-    const [client, setClient] = useState([])
-    // console.log(cred.User);
+    const [client, setClient] = useState()
+    const [cstate, setCstate] = useState(false)
+    // console.log(cred.User.username);
     const usersCollectionRef = collection(db, cred.User.username);
 
     const toggleOverlay = () => {
         setVisible(!visible);
     };
-     useEffect(() => {
-         Find()
-     })
+    useEffect(() => {
+        dis()
+    }, [])
+    const dis = async () => {
+        const docSnap = await getDocs(collection(db, "b@b.com"));
+        // console.log(docSnap.docs);
+        setClient(docSnap.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+        // console.log(client);
+        // docSnap.forEach((doc) => {
+        //     doc.data() is never undefined for query doc snapshots
+        //     console.log(doc.id,doc.data());
+        //   });
+        // onSnapshot(usersCollectionRef, (d) => {
+        //     d.forEach(element => {
+        //         return(<Button>{element.id}</Button>)
+        //         console.log(element.id);
+        //         setClient(element.id)
+        //         console.log(client);
+        //     })
+        // })
+    }
     const Find = async () => {
-        const docRef = doc(db, cred.User.username, 'mohit');
-        const docSnap = await getDocs(usersCollectionRef);
-   setclient(docSnap.docs.map((doc) => ({ ...doc.data(), id: doc.id })));     
-docSnap.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id);
-            setClient(client.push(doc.id))
-        });
+        if (cstate == false) {
+            // const docSnap = await getDocs(usersCollectionRef);
+            // docSnap.forEach((doc) => {
+            //     doc.data() is never undefined for query doc snapshots
+            //     console.log(doc.id);
+            //     let d = [];
+            //     console.log(doc.id);
+            //     d.push(doc.id)
+            //     setClient(d)
+            //     setCstate(true)
+            // });
+        } else {
+            return client
+        }
+
         // console.log(client);
     }
 
@@ -83,8 +109,8 @@ docSnap.forEach((doc) => {
                         type='solid'
                         onPress={async () => {
                             await setDoc(doc(db, cred.User.username, AddC), {
-                                payment: [],
-                                remain: []
+                                payment: [0],
+                                remain: [0]
                             });
                         }}
                         title='Add'
@@ -94,17 +120,51 @@ docSnap.forEach((doc) => {
             </View>
             <Button
                 title="a"
-                onPress={Find}
+                onPress={dis}
             />
             {
-                 client ?  
-                client.map((l) => (
-                    <ListItem bottomDivider>
-                        <ListItem.Content>
-                            <ListItem.Title>{l}</ListItem.Title>
-                        </ListItem.Content>
-                    </ListItem> : <Text>No client</Text>
-                ))
+                client ?
+                    client.map((doc) => {
+                        console.log(doc.payment)
+                        return (
+
+                            <ListItem key={doc.id} bottomDivider>
+                                <ListItem.Content>
+                                    <View
+                                        style={{
+                                            width: '100%',
+                                            flexDirection: 'row',
+                                            justifyContent: 'space-between'
+                                        }}
+                                    >
+                                        <Text style={{
+                                            fontSize: 20
+                                        }}>{doc.id}</Text>
+                                        <View>
+                                            <TouchableOpacity
+                                            onPress={
+                                                Alert.alert("sa")
+                                            }>
+                                                <View style={{
+                                                    flexDirection: 'row'
+                                                }}>
+                                                    <ListItem.Subtitle>Payment:</ListItem.Subtitle>
+                                                    <ListItem.Subtitle>{doc.payment}</ListItem.Subtitle>
+                                                </View>
+                                                <View style={{
+                                                    flexDirection: 'row'
+                                                }}>
+                                                    <ListItem.Subtitle>Remain:</ListItem.Subtitle>
+                                                    <ListItem.Subtitle>{doc.remain}</ListItem.Subtitle>
+                                                </View>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                </ListItem.Content>
+                            </ListItem>
+
+                        )
+                    }) : <Text>No Clients</Text>
             }
 
         </View>
