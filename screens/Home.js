@@ -12,12 +12,17 @@ const Home = (props) => {
     const [visible, setVisible] = useState(false);
     const [AddC, setAddC] = useState('');
     const [client, setClient] = useState()
+const [clientvis, setClientvis] = useState()
+
     const [cstate, setCstate] = useState(false)
     // console.log(cred.User.username);
     const usersCollectionRef = collection(db, cred.User.username);
 
     const toggleOverlay = () => {
         setVisible(!visible);
+    };
+    const toggleclientOverlay = () => {
+        setClientvis(!visible);
     };
     useEffect(() => {
         dis()
