@@ -136,7 +136,7 @@ const Home = (props) => {
             {
                 client ?
                     client.map((doc) => {
-                        // console.log(doc.payment)
+                        console.log(doc.payment)
                         return (
 
                             <ListItem key={doc.id} bottomDivider>
