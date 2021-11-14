@@ -13,52 +13,22 @@ const Home = (props) => {
     const [AddC, setAddC] = useState('');
     const [client, setClient] = useState()
     const [cstate, setCstate] = useState(false)
-    // console.log(cred.User.username);
     const usersCollectionRef = collection(db, cred.User.username);
+    const [clientvis, setClientvis] = useState(false);
 
     const toggleOverlay = () => {
         setVisible(!visible);
+    };
+    const toggleclientOverlay = () => {
+        setClientvis(!clientvis);
     };
     useEffect(() => {
         dis()
     }, [])
     const dis = async () => {
-        const docSnap = await getDocs(collection(db, "b@b.com"));
-        // console.log(docSnap.docs);
+        const docSnap = await getDocs(collection(db, cred.User.username));
         setClient(docSnap.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-        // console.log(client);
-        // docSnap.forEach((doc) => {
-        //     doc.data() is never undefined for query doc snapshots
-        //     console.log(doc.id,doc.data());
-        //   });
-        // onSnapshot(usersCollectionRef, (d) => {
-        //     d.forEach(element => {
-        //         return(<Button>{element.id}</Button>)
-        //         console.log(element.id);
-        //         setClient(element.id)
-        //         console.log(client);
-        //     })
-        // })
     }
-    const Find = async () => {
-        if (cstate == false) {
-            // const docSnap = await getDocs(usersCollectionRef);
-            // docSnap.forEach((doc) => {
-            //     doc.data() is never undefined for query doc snapshots
-            //     console.log(doc.id);
-            //     let d = [];
-            //     console.log(doc.id);
-            //     d.push(doc.id)
-            //     setClient(d)
-            //     setCstate(true)
-            // });
-        } else {
-            return client
-        }
-
-        // console.log(client);
-    }
-
     return (
         <View>
             <Myheader title="Home" right={<TouchableOpacity
@@ -112,6 +82,47 @@ const Home = (props) => {
                                 payment: [0],
                                 remain: [0]
                             });
+                            dis()
+                            toggleOverlay()
+                        }}
+                        title='Add'
+                    />
+                </Overlay>
+                {/* client Overlay */}
+                <Overlay isVisible={clientvis} onBackdropPress={toggleclientOverlay} overlayStyle={{
+                    width: '80%',
+                    alignItems: 'center',
+                    height: '70%'
+                }}>
+                    <TouchableOpacity
+                        onPress={toggleclientOverlay}
+                        style={{
+                            backgroundColor: '#eeee',
+                            width: 30,
+                            height: 30,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            borderRadius: 20
+                        }}>
+                        <Text>x</Text>
+                    </TouchableOpacity>
+                    <Text style={{ fontSize: 20 }}>
+                        Edit Client Info
+                    </Text>
+                    <Input
+                        value={AddC}
+                        onChangeText={setAddC}
+                        inputStyle={{ textAlign: 'center', alignItems: 'center' }}
+                        style={{ width: 80 }}
+                        placeholder="Enter Client Name"
+                    />
+                    <Button
+                        type='solid'
+                        onPress={async () => {
+                            await setDoc(doc(db, cred.User.username, AddC), {
+                                payment: [0],
+                                remain: [0]
+                            });
                         }}
                         title='Add'
                     />
@@ -125,7 +136,7 @@ const Home = (props) => {
             {
                 client ?
                     client.map((doc) => {
-                        console.log(doc.payment)
+                        // console.log(doc.payment)
                         return (
 
                             <ListItem key={doc.id} bottomDivider>
@@ -141,10 +152,10 @@ const Home = (props) => {
                                             fontSize: 20
                                         }}>{doc.id}</Text>
                                         <View>
-                                            <TouchableOpacity
-                                            onPress={
-                                                Alert.alert("sa")
-                                            }>
+                                            <TouchableOpacity onPress={()=>{
+                                                toggleclientOverlay()
+                                                console.log(doc.id);
+                                            }}>
                                                 <View style={{
                                                     flexDirection: 'row'
                                                 }}>
