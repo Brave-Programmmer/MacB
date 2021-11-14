@@ -155,6 +155,7 @@ const Home = (props) => {
                                             <TouchableOpacity onPress={()=>{
                                                 toggleclientOverlay()
                                                 console.log(doc.id);
+                                                setCstate(doc.id)
                                             }}>
                                                 <View style={{
                                                     flexDirection: 'row'
