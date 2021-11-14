@@ -110,8 +110,8 @@ const Home = (props) => {
                         Edit Client Info
                     </Text>
                     <Input
-                        value={AddC}
-                        onChangeText={setAddC}
+                        value={cstate}
+                        onChangeText={setCstate}
                         inputStyle={{ textAlign: 'center', alignItems: 'center' }}
                         style={{ width: 80 }}
                         placeholder="Enter Client Name"
