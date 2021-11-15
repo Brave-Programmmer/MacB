@@ -2,9 +2,9 @@ import React, { useContext, useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native'
 import Myheader from '../components/Myheader'
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Button, Input, Overlay, ListItem, ButtonGroup } from 'react-native-elements';
+import { Button, Input, Overlay, ListItem } from 'react-native-elements';
 import { db } from '../firebase';
-import { collection, doc, setDoc, onSnapshot, getDocs } from "firebase/firestore";
+import { collection, doc, setDoc, updateDoc, getDocs } from "firebase/firestore";
 import UserContext from '../context/user/UserContext';
 const Home = (props) => {
 
@@ -12,7 +12,9 @@ const Home = (props) => {
     const [visible, setVisible] = useState(false);
     const [AddC, setAddC] = useState('');
     const [client, setClient] = useState()
-    const [cstate, setCstate] = useState(false)
+    const [cstate, setCstate] = useState()
+    const [payment, setpayment] = useState()
+    const [remain, setremain] = useState()
     const usersCollectionRef = collection(db, cred.User.username);
     const [clientvis, setClientvis] = useState(false);
 
@@ -75,18 +77,22 @@ const Home = (props) => {
                         style={{ width: 80 }}
                         placeholder="Enter Client Name"
                     />
-                    <Button
-                        type='solid'
-                        onPress={async () => {
-                            await setDoc(doc(db, cred.User.username, AddC), {
-                                payment: [0],
-                                remain: [0]
-                            });
-                            dis()
-                            toggleOverlay()
-                        }}
-                        title='Add'
-                    />
+                    <View style={{
+                        width: '100%'
+                    }}>
+                        <Button
+                            type='solid'
+                            onPress={async () => {
+                                await setDoc(doc(db, cred.User.username, AddC), {
+                                    payment: 0,
+                                    remain: 0
+                                });
+                                dis()
+                                toggleOverlay()
+                            }}
+                            title='Add'
+                        />
+                    </View>
                 </Overlay>
                 {/* client Overlay */}
                 <Overlay isVisible={clientvis} onBackdropPress={toggleclientOverlay} overlayStyle={{
@@ -114,18 +120,43 @@ const Home = (props) => {
                         onChangeText={setCstate}
                         inputStyle={{ textAlign: 'center', alignItems: 'center' }}
                         style={{ width: 80 }}
-                        placeholder="Enter Client Name"
+                        placeholder="Update Client Name"
                     />
-                    <Button
-                        type='solid'
-                        onPress={async () => {
-                            await setDoc(doc(db, cred.User.username, AddC), {
-                                payment: [0],
-                                remain: [0]
-                            });
-                        }}
-                        title='Add'
+                    <Input
+                        value={payment}
+                        keyboardType = 'numeric'
+                        onChangeText={setpayment}
+                        inputStyle={{ textAlign: 'center', alignItems: 'center' }}
+                        style={{ width: 80 }}
+                        placeholder="Update Client Payment"
                     />
+                    <Input
+                        value={remain}
+                        onChangeText={setremain}
+                        inputStyle={{ textAlign: 'center', alignItems: 'center' }}
+                        style={{ width: 80 }}
+                        placeholder="Update Client Remaining"
+                    />
+                    <View style={{
+                        width: '100%'
+                    }}>
+                        <Button
+                            containerstyle={{
+                                width: 100,
+                                textAlign: 'center',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}
+                            type='solid'
+                            onPress={async () => {
+                                await updateDoc(doc(db, cred.User.username, cstate), {
+                                    payment: 0,
+                                    remain: 0
+                                });
+                            }}
+                            title='Update'
+                        />
+                    </View>
                 </Overlay>
 
             </View>
@@ -152,22 +183,31 @@ const Home = (props) => {
                                             fontSize: 20
                                         }}>{doc.id}</Text>
                                         <View>
-                                            <TouchableOpacity onPress={()=>{
+                                            <TouchableOpacity onPress={() => {
                                                 toggleclientOverlay()
-                                                console.log(doc.id);
                                                 setCstate(doc.id)
+                                                setpayment(doc.payment)
+                                                console.log(payment)
                                             }}>
                                                 <View style={{
                                                     flexDirection: 'row'
                                                 }}>
-                                                    <ListItem.Subtitle>Payment:</ListItem.Subtitle>
-                                                    <ListItem.Subtitle>{doc.payment}</ListItem.Subtitle>
+                                                    <ListItem.Subtitle>
+                                                        Payment:
+                                                    </ListItem.Subtitle>
+                                                    <ListItem.Subtitle>
+                                                        {doc.payment}
+                                                    </ListItem.Subtitle>
                                                 </View>
                                                 <View style={{
                                                     flexDirection: 'row'
                                                 }}>
-                                                    <ListItem.Subtitle>Remain:</ListItem.Subtitle>
-                                                    <ListItem.Subtitle>{doc.remain}</ListItem.Subtitle>
+                                                    <ListItem.Subtitle>
+                                                        Remain:
+                                                    </ListItem.Subtitle>
+                                                    <ListItem.Subtitle>
+                                                        {doc.remain}
+                                                    </ListItem.Subtitle>
                                                 </View>
                                             </TouchableOpacity>
                                         </View>
