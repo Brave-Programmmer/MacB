@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View, Alert, InteractionManager } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native'
 import Myheader from '../components/Myheader'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Button, Input, Overlay, ListItem } from 'react-native-elements';
 import { auth, db } from '../firebase';
-import { collection, doc, setDoc, updateDoc, getDocs } from "firebase/firestore";
+import { collection, doc, setDoc, updateDoc, getDocs, signOut, deleteDoc } from "firebase/firestore";
 import UserContext from '../context/user/UserContext';
 const Home = (props) => {
 
@@ -35,8 +35,13 @@ const Home = (props) => {
         <View>
             <Myheader title="Home" right={<TouchableOpacity
                 onPress={() => {
-                    auth
-                 }}
+                    signOut(auth).then(() => {
+                        props.navigation.naivigate('Login')
+                    }).catch((error) => {
+                        Alert.alert('Error', 'Failed to signout Please chrck your internet', error)
+                    });
+
+                }}
             >
                 <Icon name="sign-out" size={30} color="#eee" />
             </TouchableOpacity>} />
@@ -98,9 +103,9 @@ const Home = (props) => {
                 </Overlay>
                 {/* client Overlay */}
                 <Overlay isVisible={clientvis} onBackdropPress={toggleclientOverlay} overlayStyle={{
-                    width: '80%',
+                    width: '90%',
                     alignItems: 'center',
-                    height: '80%'
+                    height: '90%'
                 }}>
                     <TouchableOpacity
                         onPress={toggleclientOverlay}
@@ -159,9 +164,25 @@ const Home = (props) => {
                                     payment: parseInt(payment),
                                     remain: parseInt(remain)
                                 });
+                                dis()
                                 toggleclientOverlay()
                             }}
                             title='Update'
+                        />
+                        <Button
+                            containerstyle={{
+                                width: 100,
+                                textAlign: 'center',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                            }}
+                            type='outline'
+                            onPress={async () => {
+                                await deleteDoc(doc(db, cred.User.username, cstate))
+                                dis()
+                                toggleclientOverlay()
+                            }}
+                            title='Delete'
                         />
                     </View>
                 </Overlay>
