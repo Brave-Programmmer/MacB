@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View, Alert, InteractionManager } from 'react-native'
 import Myheader from '../components/Myheader'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Button, Input, Overlay, ListItem } from 'react-native-elements';
@@ -98,7 +98,7 @@ const Home = (props) => {
                 <Overlay isVisible={clientvis} onBackdropPress={toggleclientOverlay} overlayStyle={{
                     width: '80%',
                     alignItems: 'center',
-                    height: '70%'
+                    height: '80%'
                 }}>
                     <TouchableOpacity
                         onPress={toggleclientOverlay}
@@ -115,26 +115,29 @@ const Home = (props) => {
                     <Text style={{ fontSize: 20 }}>
                         Edit Client Info
                     </Text>
+                    <Text>Client Name</Text>
                     <Input
                         value={cstate}
                         onChangeText={setCstate}
                         inputStyle={{ textAlign: 'center', alignItems: 'center' }}
-                        style={{ width: 80 }}
+                        style={{ width: 50 }}
                         placeholder="Update Client Name"
                     />
+                    <Text>Client Payment</Text>
                     <Input
                         value={payment}
-                        keyboardType = 'numeric'
+                        keyboardType='numeric'
                         onChangeText={setpayment}
                         inputStyle={{ textAlign: 'center', alignItems: 'center' }}
-                        style={{ width: 80 }}
+                        style={{ width: 50 }}
                         placeholder="Update Client Payment"
                     />
+                    <Text>Client Remain</Text>
                     <Input
                         value={remain}
                         onChangeText={setremain}
                         inputStyle={{ textAlign: 'center', alignItems: 'center' }}
-                        style={{ width: 80 }}
+                        style={{ width: 50 }}
                         placeholder="Update Client Remaining"
                     />
                     <View style={{
@@ -186,7 +189,8 @@ const Home = (props) => {
                                             <TouchableOpacity onPress={() => {
                                                 toggleclientOverlay()
                                                 setCstate(doc.id)
-                                                setpayment(doc.payment)
+                                                setpayment(doc.payment.toString())
+                                                setremain(doc.remain.toString())
                                                 console.log(payment)
                                             }}>
                                                 <View style={{
