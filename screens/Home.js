@@ -4,7 +4,8 @@ import Myheader from '../components/Myheader'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Button, Input, Overlay, ListItem } from 'react-native-elements';
 import { auth, db } from '../firebase';
-import { collection, doc, setDoc, updateDoc, getDocs, signOut, deleteDoc } from "firebase/firestore";
+import { signOut } from "firebase/auth";
+import { collection, doc, setDoc, updateDoc, getDocs, deleteDoc } from "firebase/firestore";
 import UserContext from '../context/user/UserContext';
 const Home = (props) => {
 
