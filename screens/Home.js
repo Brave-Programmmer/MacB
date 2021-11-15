@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View, Alert, InteractionManager } f
 import Myheader from '../components/Myheader'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Button, Input, Overlay, ListItem } from 'react-native-elements';
-import { db } from '../firebase';
+import { auth, db } from '../firebase';
 import { collection, doc, setDoc, updateDoc, getDocs } from "firebase/firestore";
 import UserContext from '../context/user/UserContext';
 const Home = (props) => {
@@ -34,7 +34,9 @@ const Home = (props) => {
     return (
         <View>
             <Myheader title="Home" right={<TouchableOpacity
-                onPress={() => { }}
+                onPress={() => {
+                    auth
+                 }}
             >
                 <Icon name="sign-out" size={30} color="#eee" />
             </TouchableOpacity>} />
@@ -117,6 +119,7 @@ const Home = (props) => {
                     </Text>
                     <Text>Client Name</Text>
                     <Input
+                        disabled={true}
                         value={cstate}
                         onChangeText={setCstate}
                         inputStyle={{ textAlign: 'center', alignItems: 'center' }}
@@ -153,9 +156,10 @@ const Home = (props) => {
                             type='solid'
                             onPress={async () => {
                                 await updateDoc(doc(db, cred.User.username, cstate), {
-                                    payment: 0,
-                                    remain: 0
+                                    payment: parseInt(payment),
+                                    remain: parseInt(remain)
                                 });
+                                toggleclientOverlay()
                             }}
                             title='Update'
                         />
@@ -163,10 +167,6 @@ const Home = (props) => {
                 </Overlay>
 
             </View>
-            <Button
-                title="a"
-                onPress={dis}
-            />
             {
                 client ?
                     client.map((doc) => {
