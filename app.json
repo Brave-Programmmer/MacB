@@ -1,14 +1,18 @@
 {
   "expo": {
-    "name": "Mac_B",
-    "slug": "Mac_B",
+    "name": "MacB",
+    "slug": "MacB",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ffffff",
+      "android": {
+        "package": "com.yourcompany.yourappname",
+        "versionCode": 1
+      }
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -16,14 +20,12 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "supportsTablet": true
-    },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.MacB"
     },
     "web": {
       "favicon": "./assets/favicon.png"

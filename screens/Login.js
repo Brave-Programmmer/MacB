@@ -3,7 +3,7 @@ import { Alert, KeyboardAvoidingView, StyleSheet, Text, View } from 'react-nativ
 import { Button, Input } from 'react-native-elements'
 import Myheader from '../components/Myheader'
 import { auth } from '../firebase'
-import { signInWithEmailAndPassword, onAuthStateChanged,signOut } from "firebase/auth";
+import { signInWithEmailAndPassword, onAuthStateChanged, signOut, createUserWithEmailAndPassword } from "firebase/auth";
 import UserContext from '../context/user/UserContext';
 const Login = (props) => {
 
@@ -19,6 +19,25 @@ const Login = (props) => {
                 // console.log(log.user);
                 cred.UpdateUsercred(log.user.email, log.user.uid, Password)
                 // console.log(cred.User.username);
+                setPassword('')
+                setUsername('')
+                props.navigation.navigate('Home');
+            } catch (error) {
+                Alert.alert('Error!!', "Invaild Credentials", error)
+            }
+        } else {
+            Alert.alert('Error!!', 'Please Enter Username and Password');
+        }
+    }
+    const onReg = async () => {
+        if (Username) {
+            try {
+                const log = await createUserWithEmailAndPassword(auth, Username, Password);
+                // console.log(log.user);
+                cred.UpdateUsercred(log.user.email, log.user.uid, Password)
+                // console.log(cred.User.username);
+                setPassword('')
+                setUsername('')
                 props.navigation.navigate('Home');
             } catch (error) {
                 Alert.alert('Error!!', "Invaild Credentials", error)
@@ -60,9 +79,7 @@ const Login = (props) => {
                         title="Login"
                     />
                     <Button
-                        onPress={() => {
-                            props.navigation.navigate('Signup');
-                        }}
+                        onPress={onReg}
                         type="outline"
                         title="Sign Up"
                     />

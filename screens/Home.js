@@ -36,8 +36,7 @@ const Home = (props) => {
         <View>
             <Myheader title="Home" right={<TouchableOpacity
                 onPress={() => {
-                    
-                    props.navigation.naivigate('Login');
+                    props.navigation.navigate('Login');
                 }}
             >
                 <Icon name="sign-out" size={30} color="#eee" />
