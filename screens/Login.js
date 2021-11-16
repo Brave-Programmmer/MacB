@@ -3,7 +3,7 @@ import { Alert, KeyboardAvoidingView, StyleSheet, Text, View } from 'react-nativ
 import { Button, Input } from 'react-native-elements'
 import Myheader from '../components/Myheader'
 import { auth } from '../firebase'
-import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { signInWithEmailAndPassword, onAuthStateChanged,signOut } from "firebase/auth";
 import UserContext from '../context/user/UserContext';
 const Login = (props) => {
 
@@ -19,7 +19,7 @@ const Login = (props) => {
                 // console.log(log.user);
                 cred.UpdateUsercred(log.user.email, log.user.uid, Password)
                 // console.log(cred.User.username);
-                props.navigation.navigate('Home',);
+                props.navigation.navigate('Home');
             } catch (error) {
                 Alert.alert('Error!!', "Invaild Credentials", error)
             }

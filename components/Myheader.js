@@ -1,6 +1,8 @@
 import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import { Header } from 'react-native-elements'
+import { auth, db } from '../firebase';
+import { signOut } from "firebase/auth";
 import Icon from 'react-native-vector-icons/FontAwesome';
 const Myheader = (props) => {
     return (

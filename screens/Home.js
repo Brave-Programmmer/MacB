@@ -4,7 +4,8 @@ import Myheader from '../components/Myheader'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Button, Input, Overlay, ListItem } from 'react-native-elements';
 import { auth, db } from '../firebase';
-import { collection, doc, setDoc, updateDoc, getDocs, signOut, deleteDoc } from "firebase/firestore";
+import { signOut } from "firebase/auth";
+import { collection, doc, setDoc, updateDoc, getDocs, deleteDoc } from "firebase/firestore";
 import UserContext from '../context/user/UserContext';
 const Home = (props) => {
 
@@ -35,12 +36,8 @@ const Home = (props) => {
         <View>
             <Myheader title="Home" right={<TouchableOpacity
                 onPress={() => {
-                    signOut(auth).then(() => {
-                        props.navigation.naivigate('Login')
-                    }).catch((error) => {
-                        Alert.alert('Error', 'Failed to signout Please chrck your internet', error)
-                    });
-
+                    
+                    props.navigation.naivigate('Login');
                 }}
             >
                 <Icon name="sign-out" size={30} color="#eee" />
@@ -131,22 +128,22 @@ const Home = (props) => {
                         style={{ width: 50 }}
                         placeholder="Update Client Name"
                     />
-                    <Text>Client Payment</Text>
+                    <Text>Total Paid</Text>
                     <Input
                         value={payment}
                         keyboardType='numeric'
                         onChangeText={setpayment}
                         inputStyle={{ textAlign: 'center', alignItems: 'center' }}
                         style={{ width: 50 }}
-                        placeholder="Update Client Payment"
+                        placeholder="Update Total Paid"
                     />
-                    <Text>Client Remain</Text>
+                    <Text>Total Outstanding</Text>
                     <Input
                         value={remain}
                         onChangeText={setremain}
                         inputStyle={{ textAlign: 'center', alignItems: 'center' }}
                         style={{ width: 50 }}
-                        placeholder="Update Client Remaining"
+                        placeholder="Update Total Outstanding"
                     />
                     <View style={{
                         width: '100%'
