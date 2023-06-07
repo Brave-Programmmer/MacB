@@ -1,7 +1,7 @@
 # MacB
 This is a android Application for managing the accounts of companys.
 APK Available soon
-
+***
 ### General
 
 - Client Side Custom Armor Colors (with animated rainbow)
@@ -60,7 +60,7 @@ APK Available soon
 
 <details>
   <summary>Dungeons</summary>
-
+***
 
              { 
                   list.map((l, i) => ( 
