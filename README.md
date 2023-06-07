@@ -7,16 +7,10 @@ APK Available soon!!!
 
 
 <details>
-  <summary>Dungeons</summary>
-***
+  <summary>Features</summary>
 
-             { 
-                  list.map((l, i) => ( 
-                 <ListItem key={i} bottomDivider>
-                    <ListItem.Content>
-                        <ListItem.Title>{l.name}</ListItem.Title>
-                        <ListItem.Subtitle>{l.subtitle}</ListItem.Subtitle>
-                    </ListItem.Content>
-                </ListItem> 
-                 ))
-              } 
+- Made in React Native(EXPO)
+- Made using CRUD Operation principle
+- Has Firebase Database for secruity purposes 
+
+  </details>
