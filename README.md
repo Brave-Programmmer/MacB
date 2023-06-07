@@ -1,4 +1,8 @@
 # MacB
+This is a android Application for managing the accounts of companys.
+APK Available soon
+
+
              { 
                   list.map((l, i) => ( 
                  <ListItem key={i} bottomDivider>
